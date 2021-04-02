@@ -1,5 +1,5 @@
 <?php
-      $conn = mysqli_connect("sql6.freesqldatabase.com", "sql6402945", "iVAwbwr3JP","sql6402945");
+      $conn = mysqli_connect("localhost", "root", "","tourism_pal");
 
       if (isset($_POST['submit'])){
           session_start();
