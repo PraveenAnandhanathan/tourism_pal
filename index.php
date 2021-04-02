@@ -1,5 +1,5 @@
 <?php
-      $conn = mysqli_connect("localhost", "root", "","tourism_pal");
+      $conn = mysqli_connect("localhost", "id16244505_admin", "Mangaianand1.","id16244505_tourism_pal");
 
       if (isset($_POST['submit'])){
           session_start();
