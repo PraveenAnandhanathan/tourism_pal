@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $email=$_SESSION["email"];
     //   if((time()-$_SESSION['timestamp']) > 180){
     //     header("Location: expire.php");
     //   }
@@ -260,7 +261,8 @@
 
       <div id="menu">
         <div style="float: right; margin: 25px;">
-          <span id="google_translate_element" style="position: absolute; right: 400px;"></span>
+          <span id="google_translate_element" style="position: absolute; right: 600px;"></span>
+          <span style="color:yellow"><?php if(isset($email)){ echo $email; } else { echo 'No Name Set'; }?></span>
           <a href="about.php" style="color:white"><big>About</big></a>
           <a href="city.php">Home</a>
           <a href="services.php">Booking</a>
