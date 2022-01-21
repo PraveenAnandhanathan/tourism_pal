@@ -6,10 +6,19 @@
           $email=$_POST['email'];
           $email2=$_POST['email2'];
           $pass=$_POST['pass'];
+          $hashed = hash("sha512", $pass);
+          $hashed_pass = password_hash($hashed, PASSWORD_DEFAULT);
+          $key=$_POST['key'];
           $number=$_POST['number'];
+
+          ob_start();
+          system('getmac');
+          $Content = ob_get_contents();
+          ob_clean();
+          $mac = substr($Content, strpos($Content,'\\')-20, 17);
           
           if($email == $email2){
-            $query = "INSERT INTO customers(email,password,phone) VALUES ('$email','$pass','$number')";
+            $query = "INSERT INTO customers(email,password,enckey,phone,mac) VALUES ('$email','$hashed_pass','$key','$number','$mac')";
             mysqli_query($conn,$query);
             // $_SESSION['message'] = "You are now logged in";
             header("Location: index.php");
@@ -37,7 +46,7 @@
        <p>Easily using</p>
        <a href="https://www.facebook.com" target="_blank" style="margin-right:20px"><img src="icon/fb.png" width=40px></a>
        <a href="https://aboutme.google.com" target="_blank"><img src="icon/g.png" width=40px></a>
-       <p>OR</p>
+       <br><br>
        <div id="textdes">
           <i class="fa fa-user" aria-hidden="true"></i>
           <input type="text" name="email" placeholder="Email Address" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
@@ -49,7 +58,11 @@
        <div id="textdes">
           <i class="fa fa-lock" aria-hidden="true"></i>
           <input type="password" name="pass" id="pass" placeholder="Password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$">
-          <label style="top:375px;"><i class="fa fa-eye" aria-hidden="true"></i><input type="checkbox" name="sh" id="sh" onclick="showpass()" style="visibility: hidden;"></label>
+          <label style="top:337px;"><i class="fa fa-eye" aria-hidden="true"></i><input type="checkbox" name="sh" id="sh" onclick="showpass()" style="visibility: hidden;"></label>
+       </div>
+       <div id="textdes">
+          <i class="fa fa-lock" aria-hidden="true"></i>
+          <input type="text" name="key" id="key" placeholder="Key for Encryption" required>
        </div>
        <div id="textdes">
           <i class="fa fa-phone" aria-hidden="true"></i>
@@ -58,7 +71,6 @@
        <br><br>
        <input type="submit" value="REGISTER" id="button" name="submit">
        <p>Already have an account? <a href="index.php">LOG IN</a> </p>
-       <p>OR <a id="a1" href="vendor.php">I'M A TRAVEL AGENCY</a> </p>
      </div>
     </form>
   </body>

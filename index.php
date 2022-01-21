@@ -5,18 +5,23 @@
           session_start();
           $email=$_POST['email'];
           $pass=$_POST['pass'];
+          $hashed = hash("sha512", $pass);
           $_SESSION["email"] = $_POST["email"];
           $_SESSION['timestamp'] = time();
           
-            $query = mysqli_query($conn, "SELECT * from customers WHERE email='$email' AND password='$pass'");
-            $rows = mysqli_num_rows($query);
-            if($rows == 1){
-                header("Location: about.php");
-            }
-            else{
-                echo "<script type='text/javascript'>alert('Invalid Username or Password');</script>";
-                // echo "<script type='text/javascript'>document.getElementById('invalid').innerHTML = 'Invaild';</script>";
-            }
+          $query = mysqli_query($conn, "SELECT * from customers WHERE email='$email'");
+          while($row = mysqli_fetch_array($query)){
+            //$dbemail= $row['email'];
+            $dbpassword= $row['password']; 
+          if (password_verify($hashed, $dbpassword))
+          {
+            header("Location: otp.php");
+          }
+          else{
+            echo "<script type='text/javascript'>alert('Invalid Username or Password');</script>";
+            // echo "<script type='text/javascript'>document.getElementById('invalid').innerHTML = 'Invaild';</script>";
+          }
+          }
 
           mysqli_close($conn);
       }
